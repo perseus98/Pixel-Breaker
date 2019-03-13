@@ -31,7 +31,7 @@ public final class Config {
     public static final double BALL_MIN_COORD_SPEED = 2;
     public static final double BALL_SPEED_INC = 0.5f;
 
-    public static final int BAT_Y = SCREEN_HEIGHT - 40;
+    public static final int BAT_Y = SCREEN_HEIGHT - 100;
     public static final int BAT_SPEED = 8;
 
     public static final int BONUS_SPEED = 3;
@@ -56,7 +56,8 @@ public final class Config {
         "yellow.png",
     };
 
-    private static ObservableList<Image>bricksImages=javafx.collections.FXCollections.<Image>observableArrayList();
+    private static final ObservableList<Image> bricksImages =
+            javafx.collections.FXCollections.<Image>observableArrayList();
 
     public static ObservableList<Image> getBricksImages() {
         return bricksImages;
@@ -74,7 +75,8 @@ public final class Config {
         "extralife.png",
     };
 
-    private static ObservableList<Image> bonusesImages = javafx.collections.FXCollections.<Image>observableArrayList();
+    private static ObservableList<Image> bonusesImages = 
+            javafx.collections.FXCollections.<Image>observableArrayList();
 
     public static ObservableList<Image> getBonusesImages() {
         return bonusesImages;
@@ -128,7 +130,8 @@ public final class Config {
         "gameover.png",
     };
 
-    private static ObservableList<Image> images = javafx.collections.FXCollections.<Image>observableArrayList();
+    private static ObservableList<Image> images = 
+            javafx.collections.FXCollections.<Image>observableArrayList();
 
     public static ObservableList<Image> getImages() {
         return images;
