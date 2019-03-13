@@ -38,15 +38,11 @@ public class Level extends Parent {
     private ArrayList<Bonus> lives;
     private int catchedBonus;
 
-    // States
-    // 0 - starting level
-    // 1 - ball is catched
-    // 2 - playing
-    // 3 - game over
-    private static final int STARTING_LEVEL = 0;
-    private static final int BALL_CATCHED = 1;
-    private static final int PLAYING = 2;
-    private static final int GAME_OVER = 3;
+                                                 // States
+    private static final int STARTING_LEVEL = 0; // 0 - starting level
+    private static final int BALL_CATCHED = 1;   // 1 - ball is catched
+    private static final int PLAYING = 2;        // 2 - playing
+    private static final int GAME_OVER = 3;      // 3 - game over
 
     private int state;
     private int batDirection;
@@ -63,7 +59,7 @@ public class Level extends Parent {
     private ImageView message;
     private Timeline startingTimeline;
     private Timeline timeline;
-    private Group infoPanel;
+//    private Group infoPanel;
 
     public Level(int levelNumber) {
         group = new Group();
@@ -391,7 +387,7 @@ public class Level extends Parent {
         while (lives.size() > mainFrame.getLifeCount()) {
             Bonus lifeBat = lives.get(lives.size() - 1);
             lives.remove(lifeBat);
-            infoPanel.getChildren().remove(lifeBat);
+//            infoPanel.getChildren().remove(lifeBat);
         }
         // Add lifes (but no more than 9)
         int maxVisibleLifes = 9;
@@ -406,7 +402,7 @@ public class Level extends Parent {
             lifeBonus.setTranslateY(livesCaption.getTranslateY() +
                 (life / 3) * lifeBonus.getHeight() * MOB_SCALING);
             lives.add(lifeBonus);
-            infoPanel.getChildren().add(lifeBonus);
+//            infoPanel.getChildren().add(lifeBonus);
         }
     }
 
@@ -458,85 +454,85 @@ public class Level extends Parent {
     }
 
     private void initInfoPanel() {
-        infoPanel = new Group();
-        roundCaption = new Text();
-        roundCaption.setText("ROUND");
-        roundCaption.setTextOrigin(VPos.TOP);
-        roundCaption.setFill(Color.rgb(51, 102, 51));
-        Font f = new Font("Impact", 18);
-        roundCaption.setFont(f);
-        roundCaption.setTranslateX(30);
-        roundCaption.setTranslateY(128);
-        round = new Text();
-        round.setTranslateX(roundCaption.getTranslateX() +
-            roundCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
-        round.setTranslateY(roundCaption.getTranslateY());
-        round.setText(levelNumber + "");
-        round.setTextOrigin(VPos.TOP);
-        round.setFont(f);
-        round.setFill(Color.rgb(0, 204, 102));
-        scoreCaption = new Text();
-        scoreCaption.setText("SCORE");
-        scoreCaption.setFill(Color.rgb(51, 102, 51));
-        scoreCaption.setTranslateX(30);
-        scoreCaption.setTranslateY(164);
-        scoreCaption.setTextOrigin(VPos.TOP);
-        scoreCaption.setFont(f);
-        score = new Text();
-        score.setTranslateX(scoreCaption.getTranslateX() +
-            scoreCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
-        score.setTranslateY(scoreCaption.getTranslateY());
-        score.setFill(Color.rgb(0, 204, 102));
-        score.setTextOrigin(VPos.TOP);
-        score.setFont(f);
-        score.setText("");
-        livesCaption = new Text();
-        livesCaption.setText("LIFE");
-        livesCaption.setTranslateX(30);
-        livesCaption.setTranslateY(200);
-        livesCaption.setFill(Color.rgb(51, 102, 51));
-        livesCaption.setTextOrigin(VPos.TOP);
-        livesCaption.setFont(f);
-        Color INFO_LEGEND_COLOR = Color.rgb(0, 114, 188);
-        int infoWidth = Config.SCREEN_WIDTH - Config.FIELD_WIDTH;
-        Rectangle black = new Rectangle();
-        black.setWidth(infoWidth);
-        black.setHeight(Config.SCREEN_HEIGHT);
-        black.setFill(Color.BLACK);
-        ImageView verLine = new ImageView();
-        verLine.setImage(new Image(Level.class.getResourceAsStream(Config.IMAGE_DIR+"vline.png")));
-        verLine.setTranslateX(3);
-        ImageView logo = new ImageView();
-        logo.setImage(Config.getImages().get(Config.IMAGE_LOGO));
-        logo.setTranslateX(30);
-        logo.setTranslateY(30);
-        Text legend = new Text();
-        legend.setTranslateX(30);
-        legend.setTranslateY(310);
-        legend.setText("LEGEND");
-        legend.setFill(INFO_LEGEND_COLOR);
-        legend.setTextOrigin(VPos.TOP);
-        legend.setFont(new Font("Impact", 18));
-        infoPanel.getChildren().addAll(black, verLine, logo, roundCaption,
-                round, scoreCaption, score, livesCaption, legend);
-        for (int i = 0; i < Bonus.COUNT; i++) {
-            Bonus bonus = new Bonus(i);
-            Text text = new Text();
-            text.setTranslateX(100);
-            text.setTranslateY(350 + i * 40);
-            text.setText(Bonus.NAMES[i]);
-            text.setFill(INFO_LEGEND_COLOR);
-            text.setTextOrigin(VPos.TOP);
-            text.setFont(new Font("Arial", 12));
-            bonus.setTranslateX(30 + (820 - 750 - bonus.getWidth()) / 2);
-            bonus.setTranslateY(text.getTranslateY() -
-                (bonus.getHeight() - text.getBoundsInLocal().getHeight()) / 2);
-            // Workaround JFXC-2379
-            infoPanel.getChildren().addAll(bonus, text);
-        }
-        infoPanel.setTranslateX(Config.FIELD_WIDTH);
+//    infoPanel = new Group();
+    roundCaption = new Text();
+    roundCaption.setText("ROUND");
+    roundCaption.setTextOrigin(VPos.TOP);
+    roundCaption.setFill(Color.rgb(51, 102, 51));
+    Font f = new Font("Impact", 18);
+    roundCaption.setFont(f);
+    roundCaption.setTranslateX(30);
+    roundCaption.setTranslateY(128);
+    round = new Text();
+    round.setTranslateX(roundCaption.getTranslateX() +
+    roundCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
+    round.setTranslateY(roundCaption.getTranslateY());
+    round.setText(levelNumber + "");
+    round.setTextOrigin(VPos.TOP);
+    round.setFont(f);
+    round.setFill(Color.rgb(0, 204, 102));
+    scoreCaption = new Text();
+    scoreCaption.setText("SCORE");
+    scoreCaption.setFill(Color.rgb(51, 102, 51));
+    scoreCaption.setTranslateX(30);
+    scoreCaption.setTranslateY(164);
+    scoreCaption.setTextOrigin(VPos.TOP);
+    scoreCaption.setFont(f);
+    score = new Text();
+    score.setTranslateX(scoreCaption.getTranslateX() +
+    scoreCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
+    score.setTranslateY(scoreCaption.getTranslateY());
+    score.setFill(Color.rgb(0, 204, 102));
+    score.setTextOrigin(VPos.TOP);
+    score.setFont(f);
+    score.setText("");
+    livesCaption = new Text();
+    livesCaption.setText("LIFE");
+    livesCaption.setTranslateX(30);
+    livesCaption.setTranslateY(200);
+    livesCaption.setFill(Color.rgb(51, 102, 51));
+    livesCaption.setTextOrigin(VPos.TOP);
+    livesCaption.setFont(f);
+    Color INFO_LEGEND_COLOR = Color.rgb(0, 114, 188);
+    int infoWidth = Config.SCREEN_WIDTH - Config.FIELD_WIDTH;
+    Rectangle black = new Rectangle();
+    black.setWidth(infoWidth);
+    black.setHeight(Config.SCREEN_HEIGHT);
+    black.setFill(Color.BLACK);
+    ImageView verLine = new ImageView();
+    verLine.setImage(new Image(Level.class.getResourceAsStream(Config.IMAGE_DIR+"vline.png")));
+    verLine.setTranslateX(3);
+    ImageView logo = new ImageView();
+    logo.setImage(Config.getImages().get(Config.IMAGE_LOGO));
+    logo.setTranslateX(30);
+    logo.setTranslateY(30);
+    Text legend = new Text();
+    legend.setTranslateX(30);
+    legend.setTranslateY(310);
+    legend.setText("LEGEND");
+    legend.setFill(INFO_LEGEND_COLOR);
+    legend.setTextOrigin(VPos.TOP);
+    legend.setFont(new Font("Impact", 18));
+//    infoPanel.getChildren().addAll(black,  logo, verLine, roundCaption, round,
+//            scoreCaption, score, livesCaption, legend); // 
+    for (int i = 0; i < Bonus.COUNT; i++) {
+    Bonus bonus = new Bonus(i);
+    Text text = new Text();
+    text.setTranslateX(100);
+    text.setTranslateY(350 + i * 40);
+    text.setText(Bonus.NAMES[i]);
+    text.setFill(INFO_LEGEND_COLOR);
+    text.setTextOrigin(VPos.TOP);
+    text.setFont(new Font("Arial", 12));
+    bonus.setTranslateX(30 + (820 - 750 - bonus.getWidth()) / 2);
+    bonus.setTranslateY(text.getTranslateY() -
+    (bonus.getHeight() - text.getBoundsInLocal().getHeight()) / 2);
+    // Workaround JFXC-2379
+//    infoPanel.getChildren().addAll(bonus, text);
     }
-
+//    infoPanel.setTranslateX(Config.FIELD_WIDTH);
+//    infoPanel.visibleProperty()
+    }
     private void initContent(int level) {
         catchedBonus = 0;
         state = STARTING_LEVEL;
@@ -634,7 +630,7 @@ public class Level extends Parent {
             }
         }
 
-        group.getChildren().addAll(message, ball, bat, infoPanel);
+        group.getChildren().addAll(message, ball, bat);//, infoPanel
     }
 
 }
