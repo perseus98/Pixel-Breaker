@@ -9,7 +9,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -33,7 +32,7 @@ public class Level extends Parent {
     private ArrayList<Brick> bricks;
     private int brickCount;
     private ArrayList<Brick> fadeBricks;
-    private ArrayList<Bonus> bonuses;
+    //private ArrayList<Bonus> bonuses;
     private final Group group;
     private ArrayList<Bonus> lives;
     private int catchedBonus;
@@ -114,73 +113,73 @@ public class Level extends Parent {
                 moveBat(bat.getTranslateX() + batDirection);
             }
             // Process bonuses
-            Iterator<Bonus> bonusIterator = bonuses.iterator();
-            while (bonusIterator.hasNext()) {
-                Bonus bonus = bonusIterator.next();
-                if (bonus.getTranslateY() > Config.SCREEN_HEIGHT) {
-                    bonus.setVisible(false);
-                    bonusIterator.remove();
-                    group.getChildren().remove(bonus);
-                } else {
-                    bonus.setTranslateY(bonus.getTranslateY() + Config.BONUS_SPEED);
-                    if (bonus.getTranslateX() + bonus.getWidth() > bat.getTranslateX() &&
-                            bonus.getTranslateX() < bat.getTranslateX() + bat.getWidth() &&
-                            bonus.getTranslateY() + bonus.getHeight() > bat.getTranslateY() &&
-                            bonus.getTranslateY() < bat.getTranslateY() + bat.getHeight()) {
-                        // Bonus is catched
-                        updateScore(100);
-                        catchedBonus = bonus.getType();
-                        bonus.setVisible(false);
-                        bonusIterator.remove();
-                        group.getChildren().remove(bonus);
-                        switch (bonus.getType()) {
-                            case Bonus.TYPE_SLOW:
-                                ballDirX /= 1.5;
-                                ballDirY /= 1.5;
-                                correctBallSpeed();
-                                break;
-                            case Bonus.TYPE_FAST:
-                                ballDirX *= 1.5;
-                                ballDirY *= 1.5;
-                                correctBallSpeed();
-                                break;
-                            case Bonus.TYPE_GROW_BAT:
-                                if (bat.getSize() < Bat.MAX_SIZE) {
-                                    bat.changeSize(bat.getSize() + 1);
-                                    if (bat.getTranslateX() + bat.getWidth() > Config.FIELD_WIDTH) {
-                                        bat.setTranslateX(Config.FIELD_WIDTH - bat.getWidth());
-                                    }
-                                }   break;
-                            case Bonus.TYPE_REDUCE_BAT:
-                                if (bat.getSize() > 0) {
-                                    int oldWidth = bat.getWidth();
-                                    bat.changeSize(bat.getSize() - 1);
-                                    bat.setTranslateX(bat.getTranslateX() + ((oldWidth - bat.getWidth()) / 2));
-                                }   break;
-                            case Bonus.TYPE_GROW_BALL:
-                                if (ball.getSize() < Ball.MAX_SIZE) {
-                                    ball.changeSize(ball.getSize() + 1);
-                                    if (state == BALL_CATCHED) {
-                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
-                                    }
-                                }   break;
-                            case Bonus.TYPE_REDUCE_BALL:
-                                if (ball.getSize() > 0) {
-                                    ball.changeSize(ball.getSize() - 1);
-                                    if (state == BALL_CATCHED) {
-                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
-                                    }
-                                }   break;
-                            case Bonus.TYPE_LIFE:
-                                mainFrame.increaseLives();
-                                updateLives();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
+//            Iterator<Bonus> bonusIterator = bonuses.iterator();
+//            while (bonusIterator.hasNext()) {
+//                Bonus bonus = bonusIterator.next();
+//                if (bonus.getTranslateY() > Config.SCREEN_HEIGHT) {
+//                    bonus.setVisible(false);
+//                    bonusIterator.remove();
+//                    group.getChildren().remove(bonus);
+//                } else {
+//                    bonus.setTranslateY(bonus.getTranslateY() + Config.BONUS_SPEED);
+//                    if (bonus.getTranslateX() + bonus.getWidth() > bat.getTranslateX() &&
+//                            bonus.getTranslateX() < bat.getTranslateX() + bat.getWidth() &&
+//                            bonus.getTranslateY() + bonus.getHeight() > bat.getTranslateY() &&
+//                            bonus.getTranslateY() < bat.getTranslateY() + bat.getHeight()) {
+//                        // Bonus is catched
+//                        updateScore(100);
+//                        catchedBonus = bonus.getType();
+//                        bonus.setVisible(false);
+//                        bonusIterator.remove();
+//                        group.getChildren().remove(bonus);
+//                        switch (bonus.getType()) {
+//                            case Bonus.TYPE_SLOW:
+//                                ballDirX /= 1.5;
+//                                ballDirY /= 1.5;
+//                                correctBallSpeed();
+//                                break;
+//                            case Bonus.TYPE_FAST:
+//                                ballDirX *= 1.5;
+//                                ballDirY *= 1.5;
+//                                correctBallSpeed();
+//                                break;
+//                            case Bonus.TYPE_GROW_BAT:
+//                                if (bat.getSize() < Bat.MAX_SIZE) {
+//                                    bat.changeSize(bat.getSize() + 1);
+//                                    if (bat.getTranslateX() + bat.getWidth() > Config.FIELD_WIDTH) {
+//                                        bat.setTranslateX(Config.FIELD_WIDTH - bat.getWidth());
+//                                    }
+//                                }   break;
+//                            case Bonus.TYPE_REDUCE_BAT:
+//                                if (bat.getSize() > 0) {
+//                                    int oldWidth = bat.getWidth();
+//                                    bat.changeSize(bat.getSize() - 1);
+//                                    bat.setTranslateX(bat.getTranslateX() + ((oldWidth - bat.getWidth()) / 2));
+//                                }   break;
+//                            case Bonus.TYPE_GROW_BALL:
+//                                if (ball.getSize() < Ball.MAX_SIZE) {
+//                                    ball.changeSize(ball.getSize() + 1);
+//                                    if (state == BALL_CATCHED) {
+//                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
+//                                    }
+//                                }   break;
+//                            case Bonus.TYPE_REDUCE_BALL:
+//                                if (ball.getSize() > 0) {
+//                                    ball.changeSize(ball.getSize() - 1);
+//                                    if (state == BALL_CATCHED) {
+//                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
+//                                    }
+//                                }   break;
+//                            case Bonus.TYPE_LIFE:
+//                                mainFrame.increaseLives();
+//                                updateLives();
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                    }
+//                }
+//            }
             if (state != PLAYING) {
                 return;
             }
@@ -374,14 +373,14 @@ public class Level extends Parent {
         }
         bricks.set(row * Config.FIELD_BRICK_IN_ROW + col, null);
         fadeBricks.add(brick);
-        if (Utils.random(8) == 0 && bonuses.size() < 5) {
-            Bonus bonus = new Bonus(Utils.random(Bonus.COUNT));
-            bonus.setTranslateY(brick.getTranslateY());
-            bonus.setVisible(true);
-            bonus.setTranslateX(brick.getTranslateX() + (Config.BRICK_WIDTH - bonus.getWidth()) / 2);
-            group.getChildren().add(bonus);
-            bonuses.add(bonus);
-        }
+//        if (Utils.random(8) == 0 && bonuses.size() < 5) {
+//            Bonus bonus = new Bonus(Utils.random(Bonus.COUNT));
+//            bonus.setTranslateY(brick.getTranslateY());
+//            bonus.setVisible(true);
+//            bonus.setTranslateX(brick.getTranslateX() + (Config.BRICK_WIDTH - bonus.getWidth()) / 2);
+//            group.getChildren().add(bonus);
+//            bonuses.add(bonus);
+//        }
     }
 
     private void updateLives() {
@@ -543,7 +542,7 @@ public class Level extends Parent {
         lives = new ArrayList<>();
         bricks = new ArrayList<>();
         fadeBricks = new ArrayList<>();
-        bonuses = new ArrayList<>();
+//        bonuses = new ArrayList<>();
         ball = new Ball();
         ball.setVisible(false);
         bat = new Bat();
