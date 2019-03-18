@@ -1,8 +1,5 @@
-
 package pixel_breaker;
-
 public class Utils {
-
     private static final java.util.Random RANDOM = new java.util.Random();
 
     // Returns random integer number from 0 to max - 1
@@ -21,5 +18,4 @@ public class Utils {
             return -1;
         }
     }
-
 }

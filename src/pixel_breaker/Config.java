@@ -34,11 +34,12 @@ public final class Config {
     public static final int BAT_Y = SCREEN_HEIGHT - 100;
     public static final int BAT_SPEED = 8;
 
-    public static final int BONUS_SPEED = 3;
+//    public static final int BONUS_SPEED = 3;
 
     public static final int FIELD_WIDTH = FIELD_BRICK_IN_ROW * BRICK_WIDTH;
     public static final int FIELD_HEIGHT = FIELD_WIDTH;
-    public static final int FIELD_Y = SCREEN_HEIGHT - FIELD_HEIGHT;
+    // Follow  describe the spacing for bricks from top 
+    public static final int FIELD_Y = SCREEN_HEIGHT - FIELD_HEIGHT +25;
 
     private static final String[] BRICKS_IMAGES = new String[] {
         "blue.png",
