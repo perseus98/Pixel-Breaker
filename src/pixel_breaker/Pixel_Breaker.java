@@ -1,4 +1,3 @@
-
 package pixel_breaker;
 
 import javafx.application.Application;
@@ -20,13 +19,13 @@ public class Pixel_Breaker extends Application {
         Group root = new Group();
         mainFrame = new MainFrame(root);
         stage.setTitle("Pixel Breaker");
-        stage.setResizable(false);
+        stage.setResizable(false); // if true then SYSTEM.getDIMENTIONS
         stage.setWidth(Config.SCREEN_WIDTH + 2*Config.WINDOW_BORDER);
         stage.setHeight(Config.SCREEN_HEIGHT+ 2*Config.WINDOW_BORDER + Config.TITLE_BAR_HEIGHT);
         Scene scene = new Scene(root);
         scene.setFill(Color.BLACK);
         stage.setScene(scene);
-        mainFrame.changeState(MainFrame.SPLASH);
+        mainFrame.changeState(MainFrame.SPLASH);//SPLASH
         stage.show();
     }
 
@@ -76,7 +75,7 @@ public class Pixel_Breaker extends Application {
         }
 
         public void decreaseLives() {
-            lifeCount--;
+            lifeCount++;
         }
 
         // Initializes game (lifes, scores etc)
@@ -117,4 +116,3 @@ public class Pixel_Breaker extends Application {
     }
 
 }
-

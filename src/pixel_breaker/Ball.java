@@ -32,7 +32,7 @@ public class Ball extends Parent {
     public void changeSize(int newSize) {
         size = newSize;
         imageView.setImage(Config.getImages().get(Config.IMAGE_BALL_0 + size));
-        diameter = (int) imageView.getImage().getWidth() - Config.SHADOW_WIDTH;
+//        diameter = (int) imageView.getImage().getWidth() - Config.SHADOW_WIDTH;
     }
 
 }

@@ -23,14 +23,14 @@ public final class Config {
     // Game field info
     public static final int BRICK_WIDTH = 48;
     public static final int BRICK_HEIGHT = 24;
-    public static final int SHADOW_WIDTH = 10;
-    public static final int SHADOW_HEIGHT = 16;
+//    public static final int SHADOW_WIDTH = 10;
+//    public static final int SHADOW_HEIGHT = 16;
 
     public static final double BALL_MIN_SPEED = 7;
     public static final double BALL_MAX_SPEED = BRICK_HEIGHT;
     public static final double BALL_MIN_COORD_SPEED = 2;
     public static final double BALL_SPEED_INC = 0.5f;
-
+    // Follow  describe the positioning of bat from bottom
     public static final int BAT_Y = SCREEN_HEIGHT - 100;
     public static final int BAT_SPEED = 8;
 

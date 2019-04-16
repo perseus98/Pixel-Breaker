@@ -203,74 +203,6 @@ public class Level extends Parent {
             if (batDirection != 0 && state != STARTING_LEVEL) {
                 moveBat(bat.getTranslateX() + batDirection);
             }
-            // Process bonuses
-//            Iterator<Bonus> bonusIterator = bonuses.iterator();
-//            while (bonusIterator.hasNext()) {
-//                Bonus bonus = bonusIterator.next();
-//                if (bonus.getTranslateY() > Config.SCREEN_HEIGHT) {
-//                    bonus.setVisible(false);
-//                    bonusIterator.remove();
-//                    group.getChildren().remove(bonus);
-//                } else {
-//                    bonus.setTranslateY(bonus.getTranslateY() + Config.BONUS_SPEED);
-//                    if (bonus.getTranslateX() + bonus.getWidth() > bat.getTranslateX() &&
-//                            bonus.getTranslateX() < bat.getTranslateX() + bat.getWidth() &&
-//                            bonus.getTranslateY() + bonus.getHeight() > bat.getTranslateY() &&
-//                            bonus.getTranslateY() < bat.getTranslateY() + bat.getHeight()) {
-//                        // Bonus is catched
-//                        updateScore(100);
-//                        catchedBonus = bonus.getType();
-//                        bonus.setVisible(false);
-//                        bonusIterator.remove();
-//                        group.getChildren().remove(bonus);
-//                        switch (bonus.getType()) {
-//                            case Bonus.TYPE_SLOW:
-//                                ballDirX /= 1.5;
-//                                ballDirY /= 1.5;
-//                                correctBallSpeed();
-//                                break;
-//                            case Bonus.TYPE_FAST:
-//                                ballDirX *= 1.5;
-//                                ballDirY *= 1.5;
-//                                correctBallSpeed();
-//                                break;
-//                            case Bonus.TYPE_GROW_BAT:
-//                                if (bat.getSize() < Bat.MAX_SIZE) {
-//                                    bat.changeSize(bat.getSize() + 1);
-//                                    if (bat.getTranslateX() + bat.getWidth() > Config.FIELD_WIDTH) {
-//                                        bat.setTranslateX(Config.FIELD_WIDTH - bat.getWidth());
-//                                    }
-//                                }   break;
-//                            case Bonus.TYPE_REDUCE_BAT:
-//                                if (bat.getSize() > 0) {
-//                                    int oldWidth = bat.getWidth();
-//                                    bat.changeSize(bat.getSize() - 1);
-//                                    bat.setTranslateX(bat.getTranslateX() + ((oldWidth - bat.getWidth()) / 2));
-//                                }   break;
-//                            case Bonus.TYPE_GROW_BALL:
-//                                if (ball.getSize() < Ball.MAX_SIZE) {
-//                                    ball.changeSize(ball.getSize() + 1);
-//                                    if (state == BALL_CATCHED) {
-//                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
-//                                    }
-//                                }   break;
-//                            case Bonus.TYPE_REDUCE_BALL:
-//                                if (ball.getSize() > 0) {
-//                                    ball.changeSize(ball.getSize() - 1);
-//                                    if (state == BALL_CATCHED) {
-//                                        ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
-//                                    }
-//                                }   break;
-//                            case Bonus.TYPE_LIFE:
-//                                mainFrame.increaseLives();
-//                                updateLives();
-//                                break;
-//                            default:
-//                                break;
-//                        }
-//                    }
-//                }
-//            }
             if (state != PLAYING) {
                 return;
             }
@@ -278,13 +210,17 @@ public class Level extends Parent {
             double newY = ball.getTranslateY() + ballDirY;
             boolean inverseX = false;
             boolean inverseY = false;
-            if (newX < 0) {
+            if (newX < 95) {
                 newX = -newX;
                 inverseX = true;
             }
             int BALL_MAX_X = Config.FIELD_WIDTH - ball.getDiameter();
-            if (newX > BALL_MAX_X) {
-                newX = BALL_MAX_X - (newX - BALL_MAX_X);
+//            if (newX > BALL_MAX_X) {
+//                newX = BALL_MAX_X - (newX - BALL_MAX_X);
+//                inverseX = true;
+//            }
+            if (newX > 145) {
+                newX = 145 - (newX - 145);
                 inverseX = true;
             }
             if (newY < Config.FIELD_Y) {
@@ -326,7 +262,7 @@ public class Level extends Parent {
             int secondCol = (int)((newX + ball.getDiameter()) / Config.BRICK_WIDTH);
             int firstRow = (int)((newY - Config.FIELD_Y) / Config.BRICK_HEIGHT);
             int secondRow = (int)((newY - Config.FIELD_Y + ball.getDiameter()) / Config.BRICK_HEIGHT);
-            if (ballDirX > 0) {
+            if (ballDirX > 95) {
                 int temp = secondCol;
                 secondCol = firstCol;
                 firstCol = temp;
@@ -402,7 +338,7 @@ public class Level extends Parent {
                     String type = rowString.substring(col, col + 1);
                     if (!type.equals(" ")) {
                         brick = new Brick(Brick.getBrickType(type));
-                        brick.setTranslateX(col * Config.BRICK_WIDTH);
+                        brick.setTranslateX((col * Config.BRICK_WIDTH)+120);
                         brick.setTranslateY(Config.FIELD_Y + row * Config.BRICK_HEIGHT);
                         if (brick.getType() != Brick.TYPE_GREY) {
                             brickCount++;
@@ -430,15 +366,17 @@ public class Level extends Parent {
 
     private void moveBat(double newX) {
         double x = newX;
-        if (x < 0) {
-            x = 0;
+        // Max Left movement of bat
+        if (x < 95) {
+            x = 95;
         }
-        if (x + bat.getWidth() > Config.FIELD_WIDTH) {
-            x = Config.FIELD_WIDTH - bat.getWidth();
+        // Max right movement of bat
+        if (x + bat.getWidth() > Config.FIELD_WIDTH + 145) {
+            x = Config.FIELD_WIDTH - bat.getWidth() + 145;
         }
         if (state == BALL_CATCHED) {
             double ballX = ball.getTranslateX() + x - bat.getTranslateX();
-            if (ballX < 0) {
+            if (ballX < 95) { // changed 
                 ballX = 0;
             }
             double BALL_MAX_X = Config.FIELD_WIDTH - ball.getDiameter();
@@ -464,6 +402,7 @@ public class Level extends Parent {
         }
         bricks.set(row * Config.FIELD_BRICK_IN_ROW + col, null);
         fadeBricks.add(brick);
+        // Follow adds bonus to bricks
 //        if (Utils.random(8) == 0 && bonuses.size() < 5) {
 //            Bonus bonus = new Bonus(Utils.random(Bonus.COUNT));
 //            bonus.setTranslateY(brick.getTranslateY());
