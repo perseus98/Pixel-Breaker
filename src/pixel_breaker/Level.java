@@ -1,4 +1,3 @@
-
 package pixel_breaker;
 
 import java.util.ArrayList;
@@ -9,17 +8,12 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import pixel_breaker.Pixel_Breaker.MainFrame;
@@ -82,14 +76,14 @@ public class Level extends Parent {
         bat.setVisible(false);
         message = new ImageView();
         message.setImage(Config.getImages().get(Config.IMAGE_READY));
-        message.setTranslateX((Config.FIELD_WIDTH - message.getImage().getWidth()) / 2);
+        message.setTranslateX((Config.SCREEN_WIDTH - message.getImage().getWidth()) / 2);
         message.setTranslateY(Config.FIELD_Y +
             (Config.FIELD_HEIGHT - message.getImage().getHeight()) / 2);
         message.setVisible(false);
         initLevel();
         initStartingTimeline();
         initTimeline();
-        initInfoPanel();
+//        initInfoPanel();
         ImageView background = new ImageView();
         background.setFocusTraversable(true);
         background.setImage(Config.getImages().get(Config.IMAGE_BACKGROUND));
@@ -170,8 +164,8 @@ public class Level extends Parent {
         KeyFrame kf4 = new KeyFrame(Duration.millis(4000), (ActionEvent event) -> {
             message.setVisible(false);
             
-            bat.setTranslateX((Config.FIELD_WIDTH - bat.getWidth()) / 2.0);
-            ball.setTranslateX((Config.FIELD_WIDTH - ball.getDiameter()) / 2.0);
+            bat.setTranslateX((Config.SCREEN_WIDTH - bat.getWidth()) / 2.0);
+            ball.setTranslateX((Config.SCREEN_WIDTH - ball.getDiameter()) / 2.0);
             ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
             ballDirX = (Utils.random(2) * 2 - 1) * Config.BALL_MIN_COORD_SPEED;
             ballDirY = -Config.BALL_MIN_SPEED;
@@ -211,20 +205,22 @@ public class Level extends Parent {
             boolean inverseX = false;
             boolean inverseY = false;
             if (newX < 95) {
-                newX = -newX;
+                newX = 95;
                 inverseX = true;
             }
-            int BALL_MAX_X = Config.FIELD_WIDTH - ball.getDiameter();
-//            if (newX > BALL_MAX_X) {
-//                newX = BALL_MAX_X - (newX - BALL_MAX_X);
+//            
+            int BALL_MAX_X = Config.SCREEN_WIDTH - ball.getDiameter() - 110;
+            if (newX > BALL_MAX_X) {
+                newX = BALL_MAX_X - (newX - BALL_MAX_X);
+                inverseX = true;
+            }
+//            if (newX > 145) {
+//                newX = 145 - (newX - 145);
 //                inverseX = true;
 //            }
-            if (newX > 145) {
-                newX = 145 - (newX - 145);
-                inverseX = true;
-            }
-            if (newY < Config.FIELD_Y) {
-                newY = 2 * Config.FIELD_Y - newY;
+            if (newY < Config.SCREEN_HEIGHT - 612) {
+//                newY = 2 * Config.FIELD_Y - newY;
+                newY = Config.SCREEN_HEIGHT - 612;
                 inverseY = true;
             }
             // Determine hit bat and ball
@@ -276,24 +272,24 @@ public class Level extends Parent {
             Brick horBrick = getBrick(secondRow, firstCol);
             if (vertBrick != null) {
                 kickBrick(firstRow, secondCol);
-                if (catchedBonus != Bonus.TYPE_STRIKE) {
-                    inverseY = true;
-                }
+//                if (catchedBonus != Bonus.TYPE_STRIKE) { // UNcommet for collision
+//                    inverseY = true;
+//                }
             }
             if (horBrick != null &&
                     (firstCol != secondCol || firstRow != secondRow)) {
                 kickBrick(secondRow, firstCol);
-                if (catchedBonus != Bonus.TYPE_STRIKE) {
-                    inverseX = true;
-                }
+//                if (catchedBonus != Bonus.TYPE_STRIKE) {
+//                    inverseX = true;
+//                }
             }
             if (firstCol != secondCol || firstRow != secondRow) {
                 Brick diagBrick = getBrick(firstRow, firstCol);
                 if (diagBrick != null && diagBrick != vertBrick &&
                         diagBrick != horBrick) {
                     kickBrick(firstRow, firstCol);
-                    if (vertBrick == null && horBrick == null &&
-                            catchedBonus != Bonus.TYPE_STRIKE) {
+                    if (vertBrick == null && horBrick == null //&& catchedBonus != Bonus.TYPE_STRIKE
+                            ) {
                         inverseX = true;
                         inverseY = true;
                     }
@@ -314,7 +310,9 @@ public class Level extends Parent {
         });
         timeline.getKeyFrames().add(kf);
     }
+                
 
+    
     public void start() {
         startingTimeline.play();
         timeline.play();
@@ -360,8 +358,8 @@ public class Level extends Parent {
     }
 
     private void updateScore(int inc) {
-        mainFrame.setScore(mainFrame.getScore() + inc);
-        score.setText(mainFrame.getScore() + "");
+//        mainFrame.setScore(mainFrame.getScore() + inc);
+//        score.setText(mainFrame.getScore() + "");
     }
 
     private void moveBat(double newX) {
@@ -377,9 +375,9 @@ public class Level extends Parent {
         if (state == BALL_CATCHED) {
             double ballX = ball.getTranslateX() + x - bat.getTranslateX();
             if (ballX < 95) { // changed 
-                ballX = 0;
+                ballX = 95;
             }
-            double BALL_MAX_X = Config.FIELD_WIDTH - ball.getDiameter();
+            double BALL_MAX_X = Config.SCREEN_WIDTH - ball.getDiameter() - 100 ;
             if (ballX > BALL_MAX_X) {
                 ballX = BALL_MAX_X;
             }
@@ -425,12 +423,12 @@ public class Level extends Parent {
 
         for (int life = lives.size(); life < Math.min(mainFrame.getLifeCount(), maxVisibleLifes); life++) {
             Bonus lifeBonus = new Bonus(Bonus.TYPE_LIFE);
-            lifeBonus.setScaleX(scale);
-            lifeBonus.setScaleY(scale);
-            lifeBonus.setTranslateX(livesCaption.getTranslateX() +
-                livesCaption.getBoundsInLocal().getWidth() + (life % 3) * lifeBonus.getWidth());
-            lifeBonus.setTranslateY(livesCaption.getTranslateY() +
-                (life / 3) * lifeBonus.getHeight() * MOB_SCALING);
+//            lifeBonus.setScaleX(scale);
+//            lifeBonus.setScaleY(scale);
+//            lifeBonus.setTranslateX(livesCaption.getTranslateX() +
+//                livesCaption.getBoundsInLocal().getWidth() + (life % 3) * lifeBonus.getWidth());
+//            lifeBonus.setTranslateY(livesCaption.getTranslateY() +
+//                (life / 3) * lifeBonus.getHeight() * MOB_SCALING);
             lives.add(lifeBonus);
 //            infoPanel.getChildren().add(lifeBonus);
         }
@@ -464,7 +462,7 @@ public class Level extends Parent {
             ball.setVisible(false);
             bat.setVisible(false);
             message.setImage(Config.getImages().get(Config.IMAGE_GAMEOVER));
-            message.setTranslateX((Config.FIELD_WIDTH - message.getImage().getWidth()) / 2);
+            message.setTranslateX((Config.SCREEN_WIDTH - message.getImage().getWidth()) / 2);
             message.setTranslateY(Config.FIELD_Y +
                 (Config.FIELD_HEIGHT - message.getImage().getHeight()) / 2);
             message.setVisible(true);
@@ -473,8 +471,8 @@ public class Level extends Parent {
             updateLives();
             bat.changeSize(Bat.DEFAULT_SIZE);
             ball.changeSize(Ball.DEFAULT_SIZE);
-            bat.setTranslateX((Config.FIELD_WIDTH - bat.getWidth()) / 2);
-            ball.setTranslateX(Config.FIELD_WIDTH / 2 - ball.getDiameter() / 2);
+            bat.setTranslateX((Config.SCREEN_WIDTH - bat.getWidth()) / 2);
+            ball.setTranslateX(Config.SCREEN_WIDTH  - ball.getDiameter() / 2);
             ball.setTranslateY(Config.BAT_Y - ball.getDiameter());
             state = BALL_CATCHED;
             catchedBonus = 0;
@@ -483,86 +481,86 @@ public class Level extends Parent {
         }
     }
 
-    private void initInfoPanel() {
-//    infoPanel = new Group();
-    roundCaption = new Text();
-    roundCaption.setText("ROUND");
-    roundCaption.setTextOrigin(VPos.TOP);
-    roundCaption.setFill(Color.rgb(51, 102, 51));
-    Font f = new Font("Impact", 18);
-    roundCaption.setFont(f);
-    roundCaption.setTranslateX(30);
-    roundCaption.setTranslateY(128);
-    round = new Text();
-    round.setTranslateX(roundCaption.getTranslateX() +
-    roundCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
-    round.setTranslateY(roundCaption.getTranslateY());
-    round.setText(levelNumber + "");
-    round.setTextOrigin(VPos.TOP);
-    round.setFont(f);
-    round.setFill(Color.rgb(0, 204, 102));
-    scoreCaption = new Text();
-    scoreCaption.setText("SCORE");
-    scoreCaption.setFill(Color.rgb(51, 102, 51));
-    scoreCaption.setTranslateX(30);
-    scoreCaption.setTranslateY(164);
-    scoreCaption.setTextOrigin(VPos.TOP);
-    scoreCaption.setFont(f);
-    score = new Text();
-    score.setTranslateX(scoreCaption.getTranslateX() +
-    scoreCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
-    score.setTranslateY(scoreCaption.getTranslateY());
-    score.setFill(Color.rgb(0, 204, 102));
-    score.setTextOrigin(VPos.TOP);
-    score.setFont(f);
-    score.setText("");
-    livesCaption = new Text();
-    livesCaption.setText("LIFE");
-    livesCaption.setTranslateX(30);
-    livesCaption.setTranslateY(200);
-    livesCaption.setFill(Color.rgb(51, 102, 51));
-    livesCaption.setTextOrigin(VPos.TOP);
-    livesCaption.setFont(f);
-    Color INFO_LEGEND_COLOR = Color.rgb(0, 114, 188);
-    int infoWidth = Config.SCREEN_WIDTH - Config.FIELD_WIDTH;
-    Rectangle black = new Rectangle();
-    black.setWidth(infoWidth);
-    black.setHeight(Config.SCREEN_HEIGHT);
-    black.setFill(Color.BLACK);
-    ImageView verLine = new ImageView();
-    verLine.setImage(new Image(Level.class.getResourceAsStream(Config.IMAGE_DIR+"vline.png")));
-    verLine.setTranslateX(3);
-    ImageView logo = new ImageView();
-    logo.setImage(Config.getImages().get(Config.IMAGE_LOGO));
-    logo.setTranslateX(30);
-    logo.setTranslateY(30);
-    Text legend = new Text();
-    legend.setTranslateX(30);
-    legend.setTranslateY(310);
-    legend.setText("LEGEND");
-    legend.setFill(INFO_LEGEND_COLOR);
-    legend.setTextOrigin(VPos.TOP);
-    legend.setFont(new Font("Impact", 18));
-//    infoPanel.getChildren().addAll(black,  logo, verLine, roundCaption, round,
-//            scoreCaption, score, livesCaption, legend); // 
-    for (int i = 0; i < Bonus.COUNT; i++) {
-    Bonus bonus = new Bonus(i);
-    Text text = new Text();
-    text.setTranslateX(100);
-    text.setTranslateY(350 + i * 40);
-    text.setText(Bonus.NAMES[i]);
-    text.setFill(INFO_LEGEND_COLOR);
-    text.setTextOrigin(VPos.TOP);
-    text.setFont(new Font("Arial", 12));
-    bonus.setTranslateX(30 + (820 - 750 - bonus.getWidth()) / 2);
-    bonus.setTranslateY(text.getTranslateY() -
-    (bonus.getHeight() - text.getBoundsInLocal().getHeight()) / 2);
-    // Workaround JFXC-2379
-//    infoPanel.getChildren().addAll(bonus, text);
-    }
-//    infoPanel.setTranslateX(Config.FIELD_WIDTH);
-//    infoPanel.visibleProperty()
-    }
-    
+//    private void initInfoPanel() {
+////    infoPanel = new Group();
+//    roundCaption = new Text();
+//    roundCaption.setText("ROUND");
+//    roundCaption.setTextOrigin(VPos.TOP);
+//    roundCaption.setFill(Color.rgb(51, 102, 51));
+//    Font f = new Font("Impact", 18);
+//    roundCaption.setFont(f);
+//    roundCaption.setTranslateX(30);
+//    roundCaption.setTranslateY(128);
+//    round = new Text();
+//    round.setTranslateX(roundCaption.getTranslateX() +
+//    roundCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
+//    round.setTranslateY(roundCaption.getTranslateY());
+//    round.setText(levelNumber + "");
+//    round.setTextOrigin(VPos.TOP);
+//    round.setFont(f);
+//    round.setFill(Color.rgb(0, 204, 102));
+//    scoreCaption = new Text();
+//    scoreCaption.setText("SCORE");
+//    scoreCaption.setFill(Color.rgb(51, 102, 51));
+//    scoreCaption.setTranslateX(30);
+//    scoreCaption.setTranslateY(164);
+//    scoreCaption.setTextOrigin(VPos.TOP);
+//    scoreCaption.setFont(f);
+//    score = new Text();
+//    score.setTranslateX(scoreCaption.getTranslateX() +
+//    scoreCaption.getBoundsInLocal().getWidth() + Config.INFO_TEXT_SPACE);
+//    score.setTranslateY(scoreCaption.getTranslateY());
+//    score.setFill(Color.rgb(0, 204, 102));
+//    score.setTextOrigin(VPos.TOP);
+//    score.setFont(f);
+//    score.setText("");
+//    livesCaption = new Text();
+//    livesCaption.setText("LIFE");
+//    livesCaption.setTranslateX(30);
+//    livesCaption.setTranslateY(200);
+//    livesCaption.setFill(Color.rgb(51, 102, 51));
+//    livesCaption.setTextOrigin(VPos.TOP);
+//    livesCaption.setFont(f);
+//    Color INFO_LEGEND_COLOR = Color.rgb(0, 114, 188);
+//    int infoWidth = Config.SCREEN_WIDTH - Config.FIELD_WIDTH;
+//    Rectangle black = new Rectangle();
+//    black.setWidth(infoWidth);
+//    black.setHeight(Config.SCREEN_HEIGHT);
+//    black.setFill(Color.BLACK);
+//    ImageView verLine = new ImageView();
+//    verLine.setImage(new Image(Level.class.getResourceAsStream(Config.IMAGE_DIR+"vline.png")));
+//    verLine.setTranslateX(3);
+//    ImageView logo = new ImageView();
+//    logo.setImage(Config.getImages().get(Config.IMAGE_LOGO));
+//    logo.setTranslateX(30);
+//    logo.setTranslateY(30);
+//    Text legend = new Text();
+//    legend.setTranslateX(30);
+//    legend.setTranslateY(310);
+//    legend.setText("LEGEND");
+//    legend.setFill(INFO_LEGEND_COLOR);
+//    legend.setTextOrigin(VPos.TOP);
+//    legend.setFont(new Font("Impact", 18));
+////    infoPanel.getChildren().addAll(black,  logo, verLine, roundCaption, round,
+////            scoreCaption, score, livesCaption, legend); // 
+//    for (int i = 0; i < Bonus.COUNT; i++) {
+//    Bonus bonus = new Bonus(i);
+//    Text text = new Text();
+//    text.setTranslateX(100);
+//    text.setTranslateY(350 + i * 40);
+//    text.setText(Bonus.NAMES[i]);
+//    text.setFill(INFO_LEGEND_COLOR);
+//    text.setTextOrigin(VPos.TOP);
+//    text.setFont(new Font("Arial", 12));
+//    bonus.setTranslateX(30 + (820 - 750 - bonus.getWidth()) / 2);
+//    bonus.setTranslateY(text.getTranslateY() -
+//    (bonus.getHeight() - text.getBoundsInLocal().getHeight()) / 2);
+//    // Workaround JFXC-2379
+////    infoPanel.getChildren().addAll(bonus, text);
+//    }
+////    infoPanel.setTranslateX(Config.FIELD_WIDTH);
+////    infoPanel.visibleProperty()
+//    }
+//    
     
 }
